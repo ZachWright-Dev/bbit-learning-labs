@@ -9,7 +9,7 @@ class mqConsumer(mqConsumerInterface):
     def __init__(self, binding_key, exchange_name, queue_name):
         self.binding_key = binding_key
         self.exchange_name = exchange_name
-        self.q_name = queue_name
+        self.queue_name = queue_name
 
         self.setupRMQConnection()
 
@@ -20,26 +20,26 @@ class mqConsumer(mqConsumerInterface):
         self.channel = connection.channel()
 
         # Create Queue if not already present
-        self.channel.queue_declare(queue="queue_name")
+        self.channel.queue_declare(queue=self.queue_name)
 
         # Create the exchange if not already present
         self.channel.exchange_declare(
-            exchange="exchange_name", exchange_type="topic"
+            exchange=self.exchange_name
         )
 
         # Bind Binding Key to Queue on the exchange
         self.channel.queue_bind(
-            queue= "queue_name",
-            routing_key= "routing_key",
-            exchange="exchange_name",
+            queue= self.queue_name,
+            routing_key= self.binding_key,
+            exchange=self.exchange_name,
         )
 
         # Set-up Callback function for receiving messages
-        self.channel.basic_consume("queue_name", self.on_message_callback, auto_ack=False)
+        self.channel.basic_consume(self.queue_name, self.on_message_callback, auto_ack=False)
 
     def on_message_callback(self, channel, method_frame, header_frame, body) -> None:
         # Acknowledge message
-        self.channel.basic_ack(method_frame.delivery_tag, False)
+        channel.basic_ack(method_frame.delivery_tag, False)
 
         #Print message (The message is contained in the body parameter variable)
 
