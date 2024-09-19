@@ -1,7 +1,7 @@
 # Problem Definition: ✨Producer✨
 
 ##  Instructions
-Create a ".py" file that will contain a class set up to be a producer in the RabbitMQ framework. This class will inherit from the mqProducerInterface and should publish a simple UTF-8 string message. 
+Create a ".py" file that will contain a class set up to be a producer in the RabbitMQ framework. This class will inherit from the mqProducerInterface and should publish a simple UTF-8 string message.
 
 Below are bullet points of the criteria:
 - In the `solution` directory, create a file named `producer_sol.py`
